@@ -5,10 +5,8 @@ MERGE_BRANCH=$1
 git checkout $MERGE_BRANCH
 git pull
 echo "Generating patch"
-git format-patch master --no-color --stdout > temp.patch
+git format-patch $MERGE_BRANCH --no-color --stdout > temp.patch
 echo "Checking if merge is possible"
 git apply temp.patch --check
 git checkout $ORIGINAL
 rm temp.patch
-
-
