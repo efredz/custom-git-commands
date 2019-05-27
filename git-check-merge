@@ -7,6 +7,12 @@ git pull
 echo "Generating patch"
 git format-patch $MERGE_BRANCH --no-color --stdout > temp.patch
 echo "Checking if merge is possible"
-git apply temp.patch --check
+if [ -s temp.patch ] 
+then
+        git apply temp.patch --check
+else
+        echo "Completely mergeable"
+fi
+
 git checkout $ORIGINAL
 rm temp.patch
