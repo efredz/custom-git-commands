@@ -1,10 +1,26 @@
 #!/bin/bash
 
+if [ $1 == "-h" ]; then
+        printf "Rename local and remote branches"
+        printf "\n\nusage:"
+        printf "\nRename branch to a new name"
+        printf "\n"
+        printf "\tgit rename-branch \$originalbranchname \$newbranchname"
+        printf "\nRename current branch to a new name"
+        printf "\n\tgit rename-branch . \$newbranchname\n"
+        exit 1;
+fi
+
 old_branch=$1
 new_branch=$2
 
-test -z $old_branch && echo "old branch required." 1>&2 && exit 1
-test -z $new_branch && echo "new branch required." 1>&2 && exit 1
+test -z $old_branch && printf "old branch required." 1>&2 && exit 1
+test -z $new_branch && printf "new branch required." 1>&2 && exit 1
+
+
+if [ $old_branch == "." ]; then
+        old_branch=$(git rev-parse --abbrev-ref HEAD)
+fi
 
 git branch -m $old_branch $new_branch
 git push origin --delete $old_branch
